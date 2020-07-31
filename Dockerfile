@@ -10,9 +10,11 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/ && \ 
-  docker-php-ext-install gd intl pdo pdo_mysql zip 
-RUN pecl install imagick && \
-  docker-php-ext-enable imagick
+  docker-php-ext-install gd intl pdo pdo_mysql zip && \
+  pecl install imagick && \
+  docker-php-ext-enable imagick && \
+  docker-php-ext-install exif && \
+  docker-php-ext-enable exif
 COPY ./docker/php-apache/site.conf /etc/apache2/sites-available/000-default.conf
 
 RUN echo '\
@@ -20,9 +22,6 @@ RUN echo '\
   error_log = /dev/stderr\n\
   error_reporting = E_ALL\n\
   ' >> /usr/local/etc/php/php.ini
-
-# RUN pecl install xdebug \
-#   && docker-php-ext-enable xdebug
 
 RUN mkdir -p \
   tmp/cache/models \
