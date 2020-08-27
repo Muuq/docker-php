@@ -14,7 +14,8 @@ RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/i
   pecl install imagick && \
   docker-php-ext-enable imagick && \
   docker-php-ext-install exif && \
-  docker-php-ext-enable exif
+  docker-php-ext-enable exif && \
+  docker-php-ext-install sockets
 COPY ./docker/php-apache/site.conf /etc/apache2/sites-available/000-default.conf
 
 RUN echo '\
