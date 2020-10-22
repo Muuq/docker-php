@@ -15,8 +15,11 @@ RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/i
   docker-php-ext-enable imagick && \
   docker-php-ext-install exif && \
   docker-php-ext-enable exif && \
-  docker-php-ext-install sockets && \
-  docker-php-ext-install php-redis
+  docker-php-ext-install sockets
+RUN pecl install -o -f redis && \
+  rm -rf /tmp/pear && \
+  docker-php-ext-enable redis
+
 COPY ./docker/php-apache/site.conf /etc/apache2/sites-available/000-default.conf
 
 RUN echo '\
