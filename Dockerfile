@@ -11,8 +11,6 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/ && \
   docker-php-ext-install gd intl pdo pdo_mysql zip bcmath && \
-  pecl install imagick && \
-  docker-php-ext-enable imagick && \
   docker-php-ext-install exif && \
   docker-php-ext-enable exif && \
   docker-php-ext-install sockets && \
@@ -39,7 +37,7 @@ RUN mkdir -p \
   && chmod -R 770 \
   tmp
 RUN a2enmod headers
-RUN echo ServerName qumuinc_php80 > /etc/apache2/conf-available/fqdn.conf && a2enconf fqdn
+RUN echo ServerName qumuinc_php83 > /etc/apache2/conf-available/fqdn.conf && a2enconf fqdn
 RUN a2enmod rewrite \
   && service apache2 restart
 
