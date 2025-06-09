@@ -1,4 +1,5 @@
 FROM php:8.3-apache
+RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 RUN apt-get update && apt-get install -y \
   nano \
   libicu-dev \
@@ -7,7 +8,7 @@ RUN apt-get update && apt-get install -y \
   libpng-dev \
   libzip-dev \
   libmagickwand-dev \
-  && rm -rf /var/lib/apt/lists/*
+  imagemagick
 
 RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/ && \
   docker-php-ext-install gd intl pdo pdo_mysql zip bcmath && \
@@ -15,7 +16,12 @@ RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/i
   docker-php-ext-enable exif && \
   docker-php-ext-install sockets && \
   pecl install apcu && \
-  docker-php-ext-enable apcu
+  docker-php-ext-enable apcu && \
+  pecl install imagick && \
+  docker-php-ext-enable imagick && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
+
 COPY ./docker/php-apache/site.conf /etc/apache2/sites-available/000-default.conf
 
 RUN echo '\
